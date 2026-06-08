@@ -1,124 +1,253 @@
-/* ------------------------------------------------
-** SideBar Components
-** File: js/components/sidebar.js
----------------------------------------------------*/
-class sidebar {
-    constructor() {
-        this.sidebar = document.querySelector(".sidebar");
-        this.menuLinks = document.querySelectorAll(".menu a");
+//public/js/components/sidebar.js
+const   sidebarItems = [
+    {
+        id: "dashboard",
+        title: "Dashboard",
+        icon: "",
+        route: "/pages/dashboard/dashboard.html",
+        roles: ["admin", "doctor", "nurse", "receptionist"],
+    },
 
-        this.intialize();
-    }
+    {
+        id: " patients",
+        title: "Patient Manament",
+        icon: "",
+        expended: true,
+        roles: ["admin", "doctor", "nurse", "receptionist"],
 
-    initialize() {
-        this.setActiveMenu();
-        this.CreatToggleButton();
-        this.attachEvents();
-    }
+        children: [
+            {
+                title: "Add Patient",
+                route: "pages/dashboard/patients.html?action=create",
+            },
+            {
+                title: "View Patients",
+                route:"/pages/dashboard/patients.html"
+            },
+            {
+                title: "Patient Profile",
+                route:"/pages/dashboard/patient-profile.html"
+            },
+            {
+                title: "Patient History",
+                route: "/pages/dashboard/patient-history.html",
+            },
+        ],
+    },
 
-    /* Highlight Current Page */
-    setActiveMenu() {
-        const currentPage = window.location.pathname
-            .split("/")
-            .pop()
-            .toLowerCase();
+    {
+        id: "doctors",
+        title: "Doctor Management",
+        icon: " ",
+        roles: ["admin"],
 
-        this.menu/this.menuLinks.forEach(Link => {
-            const href = Link.getAttribute("href");
+        children: [
+            {
+                title: "Add Doctor",
+                route: "pages/dashboard/doctors.html?action=create",
+            },
+            {
+                title: "Doctor Profiles",
+                route: "pages/dashboard/doctors.html",
+            },
+            {
+                title: "Doctor Schedule",
+                route:"/pages/dashboard/doctor-schedule.htnl",
+            },
+            {
+                title: "Availability Status",
+                route: "/pages/dashboard/availability.html",
+            },
+        ],
+    },
 
-            if (!href) return;
+    {
+        id: "appointments",
+        title: "Appointment Management",
+        icon: " ",
 
-            const pageName = href.split("/").pop().toLowerCase();
+        children: [
+            {
+                title: "Book Appointment",
+                route: "/pages/dashboard/appointment?action=create",
+            },
+            {
+                title: "Appointment Calendar",
+                route: "/pages/dashboard/calendar.html",
+            },
+            {
+                title: "Appointment History",
+                route: "/pages/dashboard/appointment-history.html",
+            },
+        ],
+    },
 
-            if (pageName === currentPage) {
-                Link.classList.add("active");
-            } else {
-                Link.classList.remove("active");
-            }
-        });
-    }
+    {
+        id: "medical-records",
+        title: "Medical Records",
+        icon: " ",
 
-    /* Creat Mobile Toggle Button */
-    createToggleButton() {
-        const navbar = document.querySelector(".navbar");
+        children: [
+            {
+                title: "Diagnosis",
+                route: "pages/dashboard/medical-records.html"
+            },
+            {
+                title: "Treatment Plan",
+                route: "/pages/dashboard/treatments.html"
+            },
+            {
+                title: "clinical Notes",
+                route: "/pages/dashboard/clinical-notes.html",
+            },
+            {
+                title: "Patient Documents",
+                route: "/pages/dashboard/docunents.html"
+            },
+        ],
+    },
 
-        if (!navbar) return;
+    {
+        id: "prescriptions",
+        title: "Prescription Management",
+        icon: " ",
 
-        const button = document.createElement("button");
+        children:[
+            {
+                title: "Create Prescription",
+                route: "/pages/dashboard/prescription.html?action=create",
+            },
+            {
+                title: "View Prescriptions",
+                route: "/pages/dashboard/prescriptions.html",
+            },
+            {
+                title: "Prescription History",
+                route: "/page/dashboard/prescription-history.html",
+            },
+        ],
+    },
 
-        button.className = "sidebar-toggle";
-        button.innerHTML = " ";
-        button.setAttribute("aria-label", "Toggle Sidebar");
+    {
+        id: "laabboratory",
+        title: "Laboratory",
+        icon: " ",
 
-        navbar.prepend(button);
-    }
+        children: [
+            {
+                title: "Lab REquests",
+                route: "/pages/dashboard/laboratory.htnl",
+            },
+            {
+                title: "Sample Collection",
+                route: "/pages/dashboard/sample-collection.html",
+            },
+            {
+                title: "Test Results",
+                route: "/pages/dashboard/test-results.html",
+            },
+        ],
+    },
+    {
+        id: "pharmacy",
+        title: "Pharmacy",
+        icon: " ",
 
-    /* Event Listenner */
-    attachEvents() {
-        document.addEventListener("click", (event) => {
+        children: [
+            {
+                title: "Inventory",
+                route: "/pages/dashboard/pharmacy.html",
+            },
+            {
+                title: "Dispense Medicine",
+                route: "/pages/dashboard/dispense.html",
+            },
+            {
+                title: " Expiry Tracking",
+                route: "/pages/dashboard/expiry.html",
+            },
+        ],
+    },
 
-            const toggleBtn = event.target.closeset(".sidebar-toggle");
+    {
+        id: "billing",
+        title: "Billing & Invoices",
+        icon: " ",
 
-            if (toggleBtn) {
-                this.toggleSidebar()
-            }
-        });
+        children: [
+            {
+                title: "Generate Invoice",
+                route:"pages/dashboard/biling.html",
+            },
+            {
+                title: "Payments",
+                route: "/pages/dashboard/payments.html",
+            },
+            {
+                title: "Insurance Claims",
+                route: "/pages/dashboard/claims.html",
+            },
+        ],
+    },
 
-        window.addEventListener("resize", () => {
-            this.handleResize();
-        });
-    }
+    {
+        id: "reports",
+        title: "Reports & Analytics",
+        icon: " ",
 
-    /* Toggle sidebar */
-    toggleSidebar() {
-        if (!this.sidebar)  return;
+        children: [
+            {
+                title: "Patient Reports",
+                route: "/pages/dashbord/reports.html?type=patients",
+            },
+            {
+                title: "Revenue Reports",
+                route: "/pages/dashboard/reports.html?type=revenue",
+            },
+            {
+                title: "Dashboard Analytics",
+                route: "/pages/dashboard/analytics.html"
+            },
+        ],
+    },
 
-        this.sidebar.classList.toggle("collapsed");
+    {
+        id: "notifications",
+        title: "Notifications",
+        icon: " ",
 
-        const isCollapsed = 
-            this.sidebar.classList.contains("collapsed");
+        children: [
+            {
+                title: "Appointment Reminders",
+                route: "/pages/dashboard/notifications.html",
+            },
+            {
+                title: "System Messages",
+                route: "/pages/dashboard/messages.html",
+            },
+        ],
+    },
 
-        localStorage.setItem(
-            "sidebarCollapsed",
-            JSON.stringify(isCollapsed)
-        );
-    }
+    {
+        id: "settings",
+        title: "Settings",
+        icon: " ",
 
-    /* Restore Sidebar State */
-    restoreState() {
-        if (!this.sidebar) return;
+        children: [
+            {
+                title: "User Profile",
+                route: "/pages/auth/profile.html",
+            },
+            {
+                title: "Roles & Permissions",
+                route: "/pages/dashboard/roles.html"
+            },
+            {
+                title: "Security",
+                route: "/pages/dashboard/security.html"
+            },
+        ],
+    },
+];
 
-        const collapsed = 
-            JSON.parse(
-                localStorage.getItem("sidebarCollapsed")
-            ) || false;
-
-        if (collapsed) {
-            this.sidebar.classList.add("collapsed")
-        }
-    }
-
-    /* Mobile Responsive */
-    handleResize() {
-        if (window.innerWidth > 768) {
-            this.sidebar?.classList.remove("mobile-open");
-        }
-    }
-
-    /* Open Sidebar (Mobile) */
-    openMobileSidebar() {
-        this.sidebar?.classList.add("mobile-open")
-    }
-
-    /* Close Sidebar (Mobile) */
-    closeMobileSidebar() {
-        this.sidebar?.classList.remove("mobile-open");
-    }
-}
-
-/* Intialize Sidebar */
-document.addEventListener("DOMContentLoaded", () => {
-    const sidebar = new Sidebar();
-    sidebar.restoreState();
-});
-
+export default sidebarItems;
